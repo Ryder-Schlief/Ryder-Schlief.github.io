@@ -1,0 +1,193 @@
+html {
+	scroll-behavior: smooth;
+}
+
+:root {
+	--black: rgb(20, 20, 20);
+	--dark_gray: rgb(30, 30, 30);
+	--gray: rgb(40, 40, 40);
+	--silver: rgb(81, 81, 81);
+	--platinum: rgb(230, 230, 230);
+	--purple: rgb(113, 90, 255);
+	--violet: rgb(90, 35, 170);
+}
+
+body {
+	font-family: "Space Mono", monospace;
+	background-color: var(--gray);
+	display: grid;
+	margin: 0px;
+	place-items: center;
+}
+
+
+h1 {
+	color: var(--platinum);
+	text-align: center;
+}
+
+h1 > .magic{
+	animation: background-pan 1.5s linear infinite;
+	background: linear-gradient(
+		to right,
+		var(--violet),
+		var(--purple),
+		var(--violet)
+	);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-size: 200%;
+	white-space: nowrap;
+	background-color: white;
+	width: 100%;
+}
+
+/* header stuff */
+#header {
+	animation: background-pan 3s linear infinite;
+	background: linear-gradient(
+		to right,
+		var(--purple),
+		var(--violet),
+		var(--purple)
+	);
+	background-size: 200%;
+	white-space: nowrap;
+	background-color: white;
+	width: 100%;
+
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+
+	top: 0;
+	position: fixed;
+	height: 10vh;
+	z-index: 5;
+}
+
+@keyframes background-pan{
+	0% {
+		background-position: 0% center;
+	}
+
+	100% {
+		background-position: -200% center;
+	}
+}
+
+#header-offset {
+	width: 100%;
+	height: 10vh;
+}
+
+.name {
+	color: var(--platinum);
+	text-decoration: none;
+	display: inline-block;
+	font-size: 2vw;
+}
+
+.header_nav {
+	margin-left: 10vw;
+	align-items: center;
+	display: flex;
+}
+
+.header_list-container {
+	align-items: center;
+	display: flex;
+}
+
+ul {
+	padding: 0;
+}
+
+.header_list-item {
+	list-style: none;
+	transition: opacity 300ms;
+}
+
+.link {
+	color: var(--platinum);
+	font-size: 1.5vw;
+	padding: .25vw 1vw;
+	text-decoration: none;
+	display: inline-block;
+}
+
+.header_list-container:hover > .header_list-item{
+	opacity: 0.5;
+}
+
+.header_list-container:hover > .header_list-item:hover {
+	opacity: 1;
+}
+/* end */
+
+/* center area */
+#canvas {
+	margin-top: 0vh;
+	width: 100vw;
+	max-width: 100%;
+	height: 300vh;
+	margin-bottom: -300vh;
+
+	z-index: 4;
+}
+
+#title {
+	margin-top: 10vh;
+	margin-bottom: 50vh;
+}
+
+.title-text {
+	margin-top: 35vh;
+	color: var(--platinum);
+	font-size: 4rem;
+	text-align: center;
+	z-index: 1;
+	position: relative;
+}
+
+#title-subtext {
+	margin-top: -2.5vh;
+}
+/* end */
+
+.anchor {
+	display: block;
+	position: relative;
+	margin-top: -17.8vh;
+	visibility: hidden;
+}
+
+.text {
+	color: var(--platinum);
+	font-size: 1.5rem;
+}
+
+#about_anchor {
+	background-color: var(--gray);
+	align-content: center;
+	text-align: center;
+	width: 50vw;
+	height: 75vh;
+}
+
+#projects_anchor {
+	background-color: var(--gray);
+	width: 100%;
+	height: 50vh;
+}
+
+#contact_anchor {
+	background-color: var(--gray);
+	width: 100%;
+	height: 50vh;
+}
+
+.text {
+	margin-top: 33.5vh;
+}
