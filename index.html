@@ -11,18 +11,20 @@
 	<body>
 		<div id="nav">
 			<div id="nav-items">
-				<a href="#home" class="nav-item">Home</a>
-				<a href="#about" class="nav-item">About</a>
-				<a href="#projects" class="nav-item">Projects</a>
-				<a href="#contact" class="nav-item">Contact</a>
+				<a href="" onclick="Scroll(0);return false" class="nav-item">Home</a>
+				<a href="" onclick="Scroll(1);return false" class="nav-item">About</a>
+				<a href="" onclick="Scroll(2);return false" class="nav-item">Projects</a>
+				<a href="" onclick="Scroll(3);return false" class="nav-item">Contact</a>
 			</div>
+		</div>
+		<div id="nav-indicators">
+			<div id="nav-indicator-left">-></div>
+			<div id="nav-indicator-right"><-</div>
 		</div>
 
 		<div id="home"></div>
 
-		<canvas id="canvas" width="2000" height="3000"></canvas>
-		<script src="main.js"></script>
-
+		<canvas id="canvas" width="2000" height="2900"></canvas>
 		<div id="title">
 			<h1 class="title-text">
 				Hi! I'm <span class="magic">Ryder Schlief</span>
@@ -31,11 +33,7 @@
 			<h1 id="title-subtext">Computer Scientist and Game Developer</h1>
 		</div>
 
-		<div id="about_anchor">
-			<div class="anchor">
-				<a id="about"></a>
-			</div>
-
+		<div id="about">
 			<div class="text">
 				<div id="about-text">
 					<h1>About Me</h1>
@@ -43,36 +41,29 @@
 				I'm a motivated highschool graduate, <br>
 				and I've been programming for over 10 years now. <br>
 				I started with the simple block based language of Scratch, <br>
-				but over the years I have learned many languages such as <br>
+				but over the years I have learned many languages, such as <br>
 				Java, C#, Python, Rust, HTML, CSS, and Javascript. <br>
-				 <br>
-				I also love developing small Indie Games <br>
-				in my spare time <br>
 			</div>
 		</div>
 
-		<div id="projects_anchor">
-			<div class="anchor">
-				<a id="projects"></a>
-			</div>
-
+		<div id="projects">
 			<div class="text">
 				<div id="projects-text">
 					<h1>Projects</h1>
 				</div>
+				Currently I don't have any published projects
 			</div>
 		</div>
 
-		<div id="contact_anchor">
-			<div class="anchor">
-				<a id="contact"></a>
-			</div>
-
+		<div id="contact">
 			<div class="text">
 				<div id="contact-text">
 					<h1>Contact Me</h1>
 				</div>
+				example links
 			</div>
 		</div>
 	</body>
+
+	<script src="main.js"></script>
 </html>

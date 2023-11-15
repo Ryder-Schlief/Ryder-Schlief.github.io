@@ -17,8 +17,8 @@ body {
 	background-color: var(--gray);
 	display: grid;
 	margin: 0px;
+	width: 90vw;
 }
-
 
 h1 {
 	color: var(--platinum);
@@ -52,23 +52,53 @@ h1 > .magic{
 }
 
 #nav-items {
-	margin-left: clamp(4rem, 20vw, 10rem);
+	margin-left: clamp(0rem, 20vw, 10rem);
 	text-align: center;
 }
 
-#nav-items:hover > .nav-item:hover {
-	opacity: 1;
+#nav-items:hover > .nav-item:not(.active):hover {
+	opacity: 0.7;
 }
 
 .nav-item {
-	opacity: 0.3;
+	opacity: 0.35;
 	color: white;
-	font-size: clamp(2rem, 8vw, 4rem);
-
+	font-size: clamp(1rem, 8vw, 4rem);
 	display: block;
 	text-decoration: none;
-	padding: clamp(0.25rem, 1vw, 2rem) 0rem;
-	transition: opacity 400ms ease;
+	padding: clamp(0rem, 1vw, 2rem) 0rem;
+	transition: opacity 100ms ease;
+}
+
+#nav-indicators {
+	margin-top: -2.1vh;
+	padding-left: 10rem;
+	position: fixed;
+	color: white;
+	height: 10rem;
+	width: 10rem;
+	z-index: 5;
+}
+
+#nav-indicator-left {
+	font-size: clamp(1rem, 8vw, 2rem);
+	align-items: center;
+	position: fixed;
+}
+#nav-indicator-right {
+	font-size: clamp(1rem, 8vw, 2rem);
+	align-items: center;
+	position: fixed;
+}
+
+.active {
+	opacity: 1;
+}
+.notransition {
+	-webkit-transition: none !important;
+	-moz-transition: none !important;
+	-o-transition: none !important;
+	transition: none !important;
 }
 /* end */
 
@@ -77,15 +107,14 @@ h1 > .magic{
 	margin-top: 0vh;
 	width: 100vw;
 	max-width: 100%;
-	height: 300vh;
+	height: 295vh;
 	margin-bottom: -300vh;
-
 	z-index: 4;
 }
 
 #title {
-	margin-top: 7.5vh;
-	margin-bottom: 25vh;
+	height: 100vh;
+	width: 99vw;
 }
 
 .title-text {
@@ -99,38 +128,36 @@ h1 > .magic{
 
 #title-subtext {
 	margin-top: -2.5vh;
+	margin-bottom: 25vh;
 }
 /* end */
 
-.anchor {
-	display: block;
-	position: relative;
-	margin-top: -17.8vh;
-	visibility: hidden;
-}
-
 .text {
 	color: var(--platinum);
-	margin-top: 33.5vh;
 	font-size: 1.5rem;
-}
-
-#about_anchor {
-	background-color: var(--gray);
 	align-content: center;
 	text-align: center;
+}
+
+#home {
+	visibility: hidden;
+	position: absolute;
+}
+
+#about {
+	background-color: var(--gray);
+	height: 65vh;
 	width: 99vw;
-	height: 75vh;
 }
 
-#projects_anchor {
+#projects {
 	background-color: var(--gray);
-	width: 100%;
-	height: 50vh;
+	height: 65vh;
+	width: 99vw;
 }
 
-#contact_anchor {
+#contact {
 	background-color: var(--gray);
-	width: 100%;
-	height: 50vh;
+	height: 65vh;
+	width: 99vw;
 }
