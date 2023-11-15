@@ -14,10 +14,10 @@ const h = canvas.height;
 const increment = 100;
 
 // [x, y, timer, x_offset, speed]
-const right_points_0 = Array.from({ length: 31 }, (_, index) => [0, increment * index, Math.random() * 6.3, w - w/5, Math.random() * 0.1 + .95]);
-const right_points_1 = Array.from({ length: 31 }, (_, index) => [0, increment * index, Math.random() * 6.3, w - w/10, Math.random() * 0.1 + .95]);
-const left_points_0 = Array.from({ length: 31 }, (_, index) => [0, increment * index, Math.random() * 6.3, 0 + w/5, -Math.random() * 0.1 + .95]);
-const left_points_1 = Array.from({ length: 31 }, (_, index) => [0, increment * index, Math.random() * 6.3, 0 + w/10, -Math.random() * 0.1 + .95]);
+const right_points_0 = Array.from({ length: 31 }, (_, index) => [0, increment * index, Math.random() * 6.3, w - w/3.9, Math.random() * 0.1 + .95]);
+const right_points_1 = Array.from({ length: 31 }, (_, index) => [0, increment * index, Math.random() * 6.3, w - w/15, Math.random() * 0.1 + .95]);
+const left_points_0 = Array.from({ length: 31 }, (_, index) => [0, increment * index, Math.random() * 6.3, 0 + w/3.9, -Math.random() * 0.1 + .95]);
+const left_points_1 = Array.from({ length: 31 }, (_, index) => [0, increment * index, Math.random() * 6.3, 0 + w/15, -Math.random() * 0.1 + .95]);
 ctx.fillStyle = black;
 ctx.fillRect(0, 0, w, h);
 

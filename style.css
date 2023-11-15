@@ -17,7 +17,6 @@ body {
 	background-color: var(--gray);
 	display: grid;
 	margin: 0px;
-	place-items: center;
 }
 
 
@@ -43,86 +42,33 @@ h1 > .magic{
 	width: 100%;
 }
 
-/* header stuff */
-#header {
-	animation: background-pan 3s linear infinite;
-	background: linear-gradient(
-		to right,
-		var(--purple),
-		var(--violet),
-		var(--purple)
-	);
-	background-size: 200%;
-	white-space: nowrap;
-	background-color: white;
-	width: 100%;
-
+/* nav stuff */
+#nav {
+	height: 100vh;
 	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-around;
-
-	top: 0;
+	align-items: center;
 	position: fixed;
-	height: 10vh;
-	z-index: 5;
+	z-index: 10;
 }
 
-@keyframes background-pan{
-	0% {
-		background-position: 0% center;
-	}
-
-	100% {
-		background-position: -200% center;
-	}
+#nav-items {
+	margin-left: clamp(4rem, 20vw, 10rem);
+	text-align: center;
 }
 
-#header-offset {
-	width: 100%;
-	height: 10vh;
-}
-
-.name {
-	color: var(--platinum);
-	text-decoration: none;
-	display: inline-block;
-	font-size: 2vw;
-}
-
-.header_nav {
-	margin-left: 10vw;
-	align-items: center;
-	display: flex;
-}
-
-.header_list-container {
-	align-items: center;
-	display: flex;
-}
-
-ul {
-	padding: 0;
-}
-
-.header_list-item {
-	list-style: none;
-	transition: opacity 300ms;
-}
-
-.link {
-	color: var(--platinum);
-	font-size: 1.5vw;
-	padding: .25vw 1vw;
-	text-decoration: none;
-	display: inline-block;
-}
-
-.header_list-container:hover > .header_list-item{
-	opacity: 0.5;
-}
-
-.header_list-container:hover > .header_list-item:hover {
+#nav-items:hover > .nav-item:hover {
 	opacity: 1;
+}
+
+.nav-item {
+	opacity: 0.3;
+	color: white;
+	font-size: clamp(2rem, 8vw, 4rem);
+
+	display: block;
+	text-decoration: none;
+	padding: clamp(0.25rem, 1vw, 2rem) 0rem;
+	transition: opacity 400ms ease;
 }
 /* end */
 
@@ -138,8 +84,8 @@ ul {
 }
 
 #title {
-	margin-top: 10vh;
-	margin-bottom: 30vh;
+	margin-top: 7.5vh;
+	margin-bottom: 25vh;
 }
 
 .title-text {
@@ -165,6 +111,7 @@ ul {
 
 .text {
 	color: var(--platinum);
+	margin-top: 33.5vh;
 	font-size: 1.5rem;
 }
 
@@ -172,7 +119,7 @@ ul {
 	background-color: var(--gray);
 	align-content: center;
 	text-align: center;
-	width: 50vw;
+	width: 99vw;
 	height: 75vh;
 }
 
@@ -186,8 +133,4 @@ ul {
 	background-color: var(--gray);
 	width: 100%;
 	height: 50vh;
-}
-
-.text {
-	margin-top: 33.5vh;
 }
