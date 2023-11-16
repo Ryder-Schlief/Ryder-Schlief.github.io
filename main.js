@@ -123,112 +123,119 @@ function Scroll(y) {
 	if (y == 0) {
 		y = 0
 	}else if (y == 1) {
-		y = (about.top+window.scrollY - ((about.bottom+window.scrollY)-(about.top+window.scrollY))/2);
+		y = about.top+window.scrollY;
 	}else if (y == 2) {
-		y = (projects.top+window.scrollY - ((projects.bottom+window.scrollY)-(projects.top+window.scrollY))/2);
+		y = projects.top+window.scrollY;
 	} else if (y == 3) {
-		y = (contact.top+window.scrollY - ((contact.bottom+window.scrollY)-(contact.top+window.scrollY))/2);
+		y = contact.top+window.scrollY;
 	}
 	window.scrollTo({top: y, left: 0, behavior: "smooth"});
 }
 
+let previousScroll = -1;
+let selectedNav = 0; // this will prevent some weird edge cases when the user scrolls in between two sections because of how the nav logic works - hard to really explain
+// essentially, if we are scrolling up but are on a nav above this one, don't do anything (and reverse for scrolling down)
+
 window.onscroll = updateNavMenu;
 
-updateNavMenu(); // update the nave menu when the webpage is loaded - this is reduntant if the user has already scrolled but if not it wont initialize the nav pointers to the right place
-function updateNavMenu(){
+updateNavMenu(false); // update the nave menu when the webpage is loaded - this is reduntant if the user has already scrolled but if not it wont initialize the nav pointers to the right place
+
+function updateNavMenu(init) {
 	let y = 0;
 	let x0 = 0;
-	let x1 = 100;
+	let x1 = 0;
 
-	const about = document.getElementById('about').getBoundingClientRect();
-	const projects = document.getElementById('projects').getBoundingClientRect();
-	const contact = document.getElementById('contact').getBoundingClientRect();
-
-	y = window.scrollY;
-
-	//if (y < )
-
-	// convert overall scroll to percentage through each div (from 0 to n of n divs)
-	a = (about.top+window.scrollY - ((about.bottom+window.scrollY)-(about.top+window.scrollY))/2);
-	p = (projects.top+window.scrollY - ((projects.bottom+window.scrollY)-(projects.top+window.scrollY))/2);
-	c = (contact.top+window.scrollY - ((contact.bottom+window.scrollY)-(contact.top+window.scrollY))/2);
-	if (y < a) {
-		//between middle of home and middle of about
-		y = (y) / (a);
-		x0 = 30 - 20*y;
-		x1 = 215 + 20*y;
-		//x1 = 30 - 20*y;
-	}else if (y < p) {
-		//between middle of about and middle of projects
-		y = (y) / (p-a) - 0.03806;
-		x0 = 10 - 50*(y-1);
-		x1 = 235 + 50*(y-1);
-		//x1 = 10 - 50*(y-1);;
-	}else if (y < c) {
-		//between middle of projects and middle of contact
-		y = (y) / (c-p) - 0.00079;
-		x0 = -40 + 20*(y-2);
-		x1 = 285 - 20*(y-2);
-		//x1 = -40 + 20*(y-2);
-	}
-	y = y / divs;
-	//y = y / (contact.top+window.scrollY - ((contact.bottom+window.scrollY)-(contact.top+window.scrollY))/2);
-	
-	rect = nav_items.getBoundingClientRect();
-	indicator_right.style.transform = `translate(${x1}px, ${(rect.height - rect.height/4) * y + rect.top + rect.height/8}px)`
-	indicator_left.style.transform = `translate(${x0}px, ${(rect.height - rect.height/4) * y + rect.top + rect.height/8}px)`
-}
-
-function getHeight(){
 	const title = document.getElementById('title').getBoundingClientRect();
 	const about = document.getElementById('about').getBoundingClientRect();
 	const projects = document.getElementById('projects').getBoundingClientRect();
 	const contact = document.getElementById('contact').getBoundingClientRect();
 
-	return title.height + about.height + projects.height + contact.height;
-}
-
-//initializeIndicator();
-
-function initializeIndicator() {
-	const hash = window.location.hash;
-
-	// get the corresponding navigation item
-	let navItem = document.querySelector(`[href="${hash}"]`);
-
-	let x0 = 25;
-	let x1 = 225;
-	if (navItem) {
-		// theres gotta be a better way to do this without hardcoding the values but whatev
-		if (hash == "#about") {
-			x0 = 0;
-			x1 = 250;
-		} else if (hash == "#projects") {
-			x0 = -50;
-			x1 = 300;
-		} else if (hash == "#contact") {
-			x0 = -25;
-			x1 = 275;
+	if (window.scrollY < previousScroll) {
+		// scrolling up
+		if (window.scrollY <= 10) {
+			updateNavMenuText(0);
+			selectedNav = 0;
+			y = 320;
+			x0 = 30;
+			x1 = 215;
+		} else if (window.scrollY <= about.top+window.scrollY + 100) {
+			if (selectedNav < 1) return;
+			updateNavMenuText(1);
+			selectedNav = 1;
+			y = 432;
+			x0 = 10;
+			x1 = 235;
+		} else if (window.scrollY <= projects.top+window.scrollY + 100) {
+			if (selectedNav < 2) return;
+			updateNavMenuText(2);
+			selectedNav = 2;
+			y = 543;
+			x0 = -40;
+			x1 = 285;
+		} else if(window.scrollY <= contact.top+window.scrollY) {
+			if (selectedNav < 3) return;
+			updateNavMenuText(3);
+			selectedNav = 3;
+			y = 655;
+			x0 = -20;
+			x1 = 265;
 		}
-	}else {
-		navItem = document.querySelector(`[href="#home"]`);
+	} else {
+		// scrolling down
+		if(window.scrollY >= projects.bottom+window.scrollY) {
+			updateNavMenuText(3);
+			selectedNav = 3;
+			y = 655;
+			x0 = -20;
+			x1 = 265;
+		} else if (window.scrollY >= about.bottom+window.scrollY) {
+			if (selectedNav > 2) return; 
+			updateNavMenuText(2);
+			selectedNav = 2;
+			y = 543;
+			x0 = -40;
+			x1 = 285;
+		} else if (window.scrollY >= title.bottom+window.scrollY - 100) {
+			if (selectedNav > 1) return; 
+			updateNavMenuText(1);
+			selectedNav = 1;
+			y = 432;
+			x0 = 10;
+			x1 = 235;
+		} else if (window.scrollY >= 0) {
+			if (selectedNav > 0) return; 
+			updateNavMenuText(0);
+			selectedNav = 0;
+			y = 320;
+			x0 = 30;
+			x1 = 215;
+		}
+	}
+	previousScroll = window.scrollY;
+
+	if (!init) {
+		indicator_right.classList.add('notransition');
+		indicator_left.classList.add('notransition');
 	}
 
-	navItem.classList.add('active');
+	indicator_right.style.transform = `translate(${x1}px, ${y}px)`
+	indicator_left.style.transform = `translate(${x0}px, ${y}px)`
 
-	navItemRect = navItem.getBoundingClientRect();
+	if (!init) {
+		indicator_left.offsetHeight;
+		indicator_left.offsetWidth;
+		indicator_right.offsetHeight;
+		indicator_right.offsetWidth;
 
-	indicator_left.classList.add('notransition');
-	indicator_right.classList.add('notransition');
+		indicator_right.classList.remove('notransition');
+		indicator_left.classList.remove('notransition');
+	}
+}
 
-	indicator_left.style.transform = `translate(${x0}px, ${navItemRect.top + navItemRect.height/2.875}px)`;
-	indicator_right.style.transform = `translate(${x1}px, ${navItemRect.top + navItemRect.height/2.875}px)`;
-
-	indicator_left.offsetHeight;
-	indicator_left.offsetWidth;
-	indicator_right.offsetHeight;
-	indicator_right.offsetWidth;
-
-	indicator_left.classList.remove('notransition');
-	indicator_right.classList.remove('notransition');
+function updateNavMenuText(i) {
+	document.getElementsByClassName('nav-item')[0].classList.remove('active');
+	document.getElementsByClassName('nav-item')[1].classList.remove('active');
+	document.getElementsByClassName('nav-item')[2].classList.remove('active');
+	document.getElementsByClassName('nav-item')[3].classList.remove('active');
+	document.getElementsByClassName('nav-item')[i].classList.add('active');
 }
