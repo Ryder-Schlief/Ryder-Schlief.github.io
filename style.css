@@ -83,13 +83,13 @@ h1 > .magic{
 
 #nav-indicator-left {
 	font-size: clamp(1rem, 8vw, 2rem);
-	transition: transform 50ms ease;
+	transition: transform 100ms ease;
 	align-items: center;
 	position: fixed;
 }
 #nav-indicator-right {
 	font-size: clamp(1rem, 8vw, 2rem);
-	transition: transform 50ms ease;
+	transition: transform 100ms ease;
 	align-items: center;
 	position: fixed;
 }
@@ -107,10 +107,11 @@ h1 > .magic{
 
 /* center area */
 #canvas {
+	position: absolute;
 	margin-top: 0vh;
 	width: 100vw;
 	max-width: 100%;
-	height: 295vh;
+	height: 355vh;
 	margin-bottom: -300vh;
 	z-index: 4;
 }
