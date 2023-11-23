@@ -1,74 +1,44 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Ryder Schlief</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Ryder Schlief - Home</title>
+		<meta name="description" content="Hi, thanks for checking out my portfolio!">
+		<meta name="keywords" content="Ryder, Schlief, portfolio, developer, programmer">
+		<meta name="author" content="Ryder Schlief">
 		<link rel="stylesheet" href="style.css">
 	</head>
 
 	<body>
-		<div id="nav">
-			<div id="nav-items">
-				<a href="" onclick="Scroll(0);return false" class="nav-item">Home</a>
-				<a href="" onclick="Scroll(1);return false" class="nav-item">About</a>
-				<a href="" onclick="Scroll(2);return false" class="nav-item">Projects</a>
-				<a href="" onclick="Scroll(3);return false" class="nav-item">Contact</a>
-			</div>
-		</div>
-		<div id="nav-indicators">
-			<div id="nav-indicator-left">-></div>
-			<div id="nav-indicator-right"><-</div>
-		</div>
+		<div class="container">
+			<h1 class="name">Ryder Schlief</h1>
+			<h2 class="subtitle">Computer Science and Game Developement</h2>
+			<a href="works.html" class="button">Works</a>
+			<a href="works.html" class="button">Highlight</a>
+			<a href="about.html" class="button">About Me</a>
+			<div class="links">
+				<a href="mailto: ryderschlief@skiff.com" type="button" class="link">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 15">
+						<path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"></path>
+					</svg>
+				</a>
+				<a href="https://github.com/ryderschlief" type="button" class="link">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 -1 16 17">
+						<path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+					</svg>
+				</a>
 
-		<div id="home"></div>
-
-		<canvas id="canvas" width="2000" height="3500"></canvas>
-
-		<div id="title">
-			<h1 class="title-text">
-				Hi! I'm <span class="magic">Ryder Schlief</span>
-			</h1>
-
-			<h1 id="title-subtext">Computer Scientist and Game Developer</h1>
-		</div>
-
-		<div id="about">
-			<div class="text">
-				<div id="about-text">
-					<h1>About Me</h1>
-				</div>
-				I'm a motivated highschool graduate, <br>
-				and I've been programming for over 10 years now. <br>
-				I started with the simple block based language of Scratch, <br>
-				but over the years I have learned many languages, such as <br>
-				Java, C#, Python, Rust, HTML, CSS, and Javascript. <br>
-			</div>
-
-			<div id="me-images">
-				<img src="images/me0.jpg" style="width: 250px; height: 350px;">
-				<img src="images/me1.jpg" style="width: 250px; height: 350px;">
+				<a href="https://www.linkedin.com/in/ryder-schlief-20b42126a/" type="button" class="link">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 -1 24 25">
+						<path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+					</svg>
+				</a>
 			</div>
 		</div>
 
-		<div id="projects">
-			<div class="text">
-				<div id="projects-text">
-					<h1>Projects</h1>
-				</div>
-				Currently I don't have any published projects
-			</div>
-		</div>
-
-		<div id="contact">
-			<div class="text">
-				<div id="contact-text">
-					<h1>Contact Me</h1>
-				</div>
-				example links
-			</div>
-		</div>
+		<canvas id="canvas" tabindex="0"></canvas>
 	</body>
 
 	<script src="main.js"></script>

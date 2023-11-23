@@ -1,176 +1,115 @@
-html {
-	scroll-behavior: smooth;
-}
-
 :root {
-	--black: rgb(20, 20, 20);
-	--dark_gray: rgb(30, 30, 30);
-	--gray: rgb(40, 40, 40);
-	--silver: rgb(81, 81, 81);
-	--platinum: rgb(230, 230, 230);
-	--purple: rgb(113, 90, 255);
-	--violet: rgb(90, 35, 170);
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-body {
-	font-family: "Space Mono", monospace;
-	background-color: var(--gray);
-	display: grid;
-	margin: 0px;
-	width: 90vw;
-}
-
-h1 {
-	color: var(--platinum);
+html, body {
+	display: flex;
+	justify-content: center;
 	text-align: center;
+	overflow: hidden;
+	color: white;
+	margin: 0;
+	z-index: 1;
 }
 
-h1 > .magic{
-	animation: background-pan 1.5s linear infinite;
-	background: linear-gradient(
-		to right,
-		var(--violet),
-		var(--purple),
-		var(--violet)
-	);
-	background-clip: text;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	background-size: 200%;
-	white-space: nowrap;
-	background-color: white;
+svg {
+	vertical-align: middle;
+}
+
+.container {
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	position: fixed;
+	display: flex;
+	height: 100%;
+	gap: 0.5rem;
 	width: 100%;
 }
 
-/* nav stuff */
-#nav {
-	height: 100vh;
+.name {
+	font-weight: normal;
+	font-size: 4rem;
+	margin: 0;
+	margin-bottom: 10px;
+}
+
+.subtitle {
+	font-weight: normal;
+	margin: 0;
+	margin-bottom: 35px;
+}
+
+.button {
+	border: 1px solid white;
+	justify-content: center;
+	border-radius: 0.25rem;
+	text-decoration: none;
+	align-items: center;
+	color: white;
+	display: flex;
+	height: 35px;
+	width: 250px;
+	margin: 0;
+}
+
+.button:hover {
+	background-color: white;
+	color: black;
+
+	transition-duration: 500ms;
+}
+
+.links {
+	justify-content: center;
+	display: flex;
+	margin-top: 15px;
+}
+
+.link {
+	fill: white;
+	border: 1px solid white;
+	border-radius: 0.25rem;
 	display: flex;
 	align-items: center;
+	justify-content: center;
+	height: 35px;
+	width: 50px;
+	margin-left: 3.5px;
+	margin-right: 3.5px;
+}
+
+.link:hover {
+	fill: black;
+	background-color: white;
+	color: black;
+
+	transition-duration: 500ms;
+}
+
+.navbar {
 	position: fixed;
-	z-index: 10;
-}
-
-#nav-items {
-	margin-left: clamp(0rem, 20vw, 10rem);
-	text-align: center;
-}
-
-#nav-items:hover > .nav-item:not(.active):hover {
-	opacity: 0.5;
-}
-
-.nav-item {
-	opacity: 0.35;
-	color: white;
-	font-size: clamp(1rem, 8vw, 4rem);
-	display: block;
-	text-decoration: none;
-	padding: clamp(0rem, 1vw, 2rem) 0rem;
-	transition: opacity 100ms ease;
-}
-
-#nav-indicators {
-	opacity: 0.8;
-	margin-top: -2.1vh;
-	padding-left: 10rem;
-	position: fixed;
-	color: white;
-	height: 10rem;
-	width: 10rem;
-	z-index: 5;
-}
-
-#nav-indicator-left {
-	font-size: clamp(1rem, 8vw, 2rem);
-	transition: transform 100ms ease;
-	align-items: center;
-	position: fixed;
-}
-#nav-indicator-right {
-	font-size: clamp(1rem, 8vw, 2rem);
-	transition: transform 100ms ease;
-	align-items: center;
-	position: fixed;
-}
-
-.active {
-	opacity: .8;
-}
-.notransition {
-	-webkit-transition: none !important;
-	-moz-transition: none !important;
-	-o-transition: none !important;
-	transition: none !important;
-}
-/* end */
-
-/* center area */
-#canvas {
-	position: absolute;
-	margin-top: 0vh;
 	width: 100vw;
-	max-width: 100%;
-	height: 355vh;
-	margin-bottom: -300vh;
-	z-index: 4;
+	height: 10vh;
 }
 
-#title {
-	height: 80vh;
-	width: 99vw;
+.navbar-name {
+	text-decoration: none;
+	font-weight: normal;
+	font-size: 2rem;
+	margin: 0;
+	color: white;
 }
 
-.title-text {
-	margin-top: 42.5vh;
-	color: var(--platinum);
-	font-size: 4rem;
-	text-align: center;
-	z-index: 1;
-	position: relative;
+.navbar-item {
+	text-decoration: none;
+	color: white;
 }
 
-#title-subtext {
-	margin-top: -2.5vh;
-	margin-bottom: 25vh;
-}
-/* end */
-
-.text {
-	color: var(--platinum);
-	font-size: 1.5rem;
-	align-content: center;
-	margin-top: 20vh;
-	text-align: center;
-}
-
-#home {
-	visibility: hidden;
+#canvas {
+	background-image: linear-gradient(to bottom right, rgb(150, 150, 160), rgb(35, 35, 40));
 	position: absolute;
-}
-
-#about {
-	background-color: var(--gray);
-	height: 80vh;
-	width: 99vw;
-}
-
-#projects {
-	background-color: var(--gray);
-	height: 80vh;
-	width: 99vw;
-}
-
-#contact {
-	background-color: var(--gray);
-	margin-top: 50vh;
-	height: 65vh;
-	width: 99vw;
-}
-
-#me-images {
-	align-content: center;
-	text-align: center;
-	margin-top: 2.5vh;
-	width: 99vw;
+	z-index: -1;
+	left: 0;
+	top: 0;
 }
