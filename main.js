@@ -63,13 +63,13 @@ function updateDivs(instant) {
 
 	if (window.location.hash == "#works") {
 		navWorks.classList.add("selected");
-		smoothTransition({ x: 0, y: -h/1.25 }, 1.5, duration);
+		smoothTransition({ x: 0, y: -h/1.25 }, 1.75, duration);
 		document.title = "Ryder Schlief - Works";
 		setTimeout(addVisible, duration/1.75, works);
 		setTimeout(addVisible, duration/1.75, navbar);
 	} else if (window.location.hash == "#about") {
 		navAbout.classList.add("selected");
-		smoothTransition({ x: -w/1.75, y: -h/1.75 }, 2.25, duration);
+		smoothTransition({ x: -w/1.75, y: -h/1.75 }, 2.5, duration);
 		document.title = "Ryder Schlief - About";
 		setTimeout(addVisible, duration/1.75, about);
 		setTimeout(addVisible, duration/1.75, navbar);
