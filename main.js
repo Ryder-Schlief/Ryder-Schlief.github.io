@@ -31,7 +31,6 @@ var works = document.getElementById("works-container");
 var about = document.getElementById("about-container");
 var navbar = document.getElementById("navbar");
 var navWorks = document.getElementById("nav-works");
-var navHighlight = document.getElementById("nav-highlight");
 var navAbout = document.getElementById("nav-about");
 
 window.onload = function() {
@@ -58,7 +57,6 @@ function updateDivs(instant) {
 	works.classList.remove("visible");
 	about.classList.remove("visible");
 	navWorks.classList.remove("selected");
-	navHighlight.classList.remove("selected");
 	navAbout.classList.remove("selected");
 
 	if (window.location.hash == "#works") {
