@@ -3,11 +3,10 @@ var ctx = canvas.getContext("2d");
 
 var h = innerHeight;
 var w = innerWidth;
-
 var center = {
 	x: w/3.5,
 	y: h/2.5
-};
+}
 
 window.onload = function() {
 	updateCanvas();
@@ -22,16 +21,24 @@ function updateCanvas() {
 	canvas.width = innerWidth;
 	h = innerHeight;
 	w = innerWidth;
+
+	center = {
+		x: w/3.5,
+		y: h/2.5
+	};
 }
 
 // animation
-var size = 350
-var length = 3;
+var size = 250
+var length = 1;
 var angle = Math.PI/2.5;
-var distance = size/length + 1;
-var expand = 350;
+var distance = size + 7.5;
+var expand = 50;
+var spacing = 10;
 var dir = 1;
-var dots = 5;
+var dots = 19;
+var rotation = 0.3;
+var flip = 1;
 
 // i "add an extra dot" here because we have to skip the first dot when drawing because of the fact that indexing starts at 0
 // could probably be fixed by a 2d array but this works so idrc
@@ -45,7 +52,7 @@ for (var i = 0; i < (dots+1)*expand; i++) {
 }
 var sizes = new Array((dots+1)*expand);
 for (var i = 0; i < (dots+1)*expand; i++) {
-	sizes[i] = (Math.random() * 7)/(Math.random() * 2 + 1) + 0.5;
+	sizes[i] = (Math.random() * 6)/(Math.random() * 2 + 1) + 0.5;
 }
 var colours = new Array((dots+1)*expand);
 for (var i = 0; i < (dots+1)*expand; i++) {
@@ -64,14 +71,31 @@ function loop(timeNow){
 		const timeDelta = (timeNow - timeLast) / 1000;
 		timeLast = timeNow;
 
-		/*length += (timeDelta * dir + (dir * length/10)) * 0.05;
-		test.textContent = length;
+		var previous = rotation;
+		//rotation += timeDelta * 0.15 * dir;
+		if (previous < 1 && rotation >= 1) {
+			dir *= -1;
+			flip *= -1;
+		} else if (previous > -1 && rotation <= -1) {
+			dir *= -1;
+			flip *= -1;
+		}
+
+		if (previous > 0 && rotation <= 0 || previous < 0 && rotation >= 0) {
+			flip *= -1;
+		}
+
+		//test.textContent = rotation;
+
+		/*length -= (timeDelta * dir + (dir * length/10)) * 0.05;
 		if (length <= 1) {
 			dir = 1;
 		} else if (length >= 1000) {
 			dir = -1;
 		}
 		distance = size/length + 1;*/
+
+		//angle += timeDelta * 0.1;
 
 		for (var i = 0; i < (dots+1)*expand; i++) {
 			offsets[i] += timeDelta * speeds[i];
@@ -98,19 +122,26 @@ function draw() {
 	// dots
 	for (let a = 0; a < expand; a++) {
 		for (let i = 1; i <= dots; i++) {
-			var x = (Math.cos(angle)*Math.sin((Math.PI*2/dots)*i+offsets[i*a])-length*Math.sin(angle)*Math.cos((Math.PI*2/dots)*i+offsets[i*a])) * (a + distance) + center.x;
-			var y = (Math.sin(angle)*Math.sin((Math.PI*2/dots)*i+offsets[i*a])+length*Math.cos(angle)*Math.cos((Math.PI*2/dots)*i+offsets[i*a])) * (a + distance) + center.y;
+			// what the fuck am i looking at
+			var x = (Math.sin((Math.PI*2/dots)*i+offsets[i*a])) * (a*spacing + distance) * /*Math.sqrt(Math.cos(angle)*Math.cos(angle) + Math.sin(angle)*Math.sin(angle)) * */rotation;
+			var y = (Math.cos((Math.PI*2/dots)*i+offsets[i*a])) * (a*spacing + distance);
+			// now add the rotation logic
+			// rotation matrices for the win
+			var vector = {
+				x: x*Math.cos(angle)-y*Math.sin(angle),
+				y: x*Math.sin(angle)+y*Math.cos(angle)
+			};
 
 			var m = (Math.sin(angle)-0)/(Math.cos(angle)-0);
 			// theres probably a better way to do this weird if statement thing
-			if (y-center.y < -1/m*(x-center.x)) {
-				if (dir == 1) {
+			if (vector.y < -1/m*vector.x) {
+				if (flip == 1) {
 					ctx.globalCompositeOperation = "destination-over";
 				} else {
 					ctx.globalCompositeOperation = "source-over";
 				}
 			} else {
-				if (dir == -1) {
+				if (flip == -1) {
 					ctx.globalCompositeOperation = "destination-over";
 				} else {
 					ctx.globalCompositeOperation = "source-over";
@@ -118,7 +149,7 @@ function draw() {
 			}
 
 			ctx.beginPath();
-			ctx.arc(x, y, sizes[i*a], 0, 2*Math.PI);
+			ctx.arc(vector.x+center.x, vector.y+center.y, sizes[i*a], 0, 2*Math.PI);
 			ctx.fillStyle = colours[i*a];
 			ctx.fill();
 		}
