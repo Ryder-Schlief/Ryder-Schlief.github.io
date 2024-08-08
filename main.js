@@ -1,34 +1,15 @@
-
 const canvas = document.getElementById("canvas");
-
-const color = `rgb(125, 125, 125)`;
+var ctx = canvas.getContext("2d");
 
 var h = innerHeight;
 var w = innerWidth;
 
-var offset = {
-	x: 0,
-	y: 0
-}
-
 var center = {
-	x: w / 2,
-	y: h / 2
-}
-
-const size = 500;
-
-const arcOffset = 10;
-
-const arcs = 15;
-
-var zoom = 0;
-
-var ctx = canvas.getContext("2d");
+	x: w/3.5,
+	y: h/2.5
+};
 
 window.onload = function() {
-	canvas.classList.add("visible");
-	updateDivs(true);
 	updateCanvas();
 }
 
@@ -41,105 +22,105 @@ function updateCanvas() {
 	canvas.width = innerWidth;
 	h = innerHeight;
 	w = innerWidth;
-
-	center = {
-		x: w / 2,
-		y: h / 2
-	}
 }
 
-window.onhashchange = function() {
-	updateDivs(false);
+// animation
+var size = 350
+var length = 3;
+var angle = Math.PI/2.5;
+var distance = size/length + 1;
+var expand = 350;
+var dir = 1;
+var dots = 5;
+
+// i "add an extra dot" here because we have to skip the first dot when drawing because of the fact that indexing starts at 0
+// could probably be fixed by a 2d array but this works so idrc
+var offsets = new Array((dots+1)*expand);
+for (var i = 0; i < (dots+1)*expand; i++) {
+	offsets[i] = Math.random() * (Math.PI*2/dots);
+}
+var speeds = new Array((dots+1)*expand);
+for (var i = 0; i < (dots+1)*expand; i++) {
+	speeds[i] = Math.random() * 0.035 + 0.01;
+}
+var sizes = new Array((dots+1)*expand);
+for (var i = 0; i < (dots+1)*expand; i++) {
+	sizes[i] = (Math.random() * 7)/(Math.random() * 2 + 1) + 0.5;
+}
+var colours = new Array((dots+1)*expand);
+for (var i = 0; i < (dots+1)*expand; i++) {
+	var colour = 50 + Math.random() * 100;
+	colours[i] = "rgb(" + colour + ", " + colour + ", " + colour + ")";
 }
 
-function updateDivs(instant) {
-	var duration = 750;
-	if (instant) {
-		duration = 0;
-	}
+requestAnimationFrame(loop);
 
-	//
-}
+var timeLast = 0;
 
-function addVisible(element) {
-	element.classList.add("visible");
-}
+var test = document.getElementById("test");
 
-function smoothTransition(targetOffset, targetZoom, duration) {
-	const startOffset = { x: offset.x, y: offset.y };
-	const startZoom = zoom;
-	var startTime = null;
-  
-	requestAnimationFrame(updateOffset);
+function loop(timeNow){
+	if (timeLast !== 0) {
+		const timeDelta = (timeNow - timeLast) / 1000;
+		timeLast = timeNow;
 
-	function updateOffset(timestamp) {
-		if (!startTime) {
-			startTime = timestamp;
+		/*length += (timeDelta * dir + (dir * length/10)) * 0.05;
+		test.textContent = length;
+		if (length <= 1) {
+			dir = 1;
+		} else if (length >= 1000) {
+			dir = -1;
+		}
+		distance = size/length + 1;*/
+
+		for (var i = 0; i < (dots+1)*expand; i++) {
+			offsets[i] += timeDelta * speeds[i];
 		}
 
-		const time = (timestamp - startTime) / duration;
-		const progress = curve(time);
-
-		if (progress < 1) {
-			offset.x = startOffset.x + (targetOffset.x - startOffset.x) * progress;
-			offset.y = startOffset.y + (targetOffset.y - startOffset.y) * progress;
-			zoom = startZoom + (targetZoom - startZoom) * progress;
-
-			requestAnimationFrame(updateOffset);
-		} else {
-			offset = targetOffset;
-			zoom = targetZoom;
-		}
+		draw();
 	}
-}
 
-function curve(x){
-	// cubic bezier curve
-	const y = Math.pow((1 - x), 3) * 0 + Math.pow(3*(1 - x), 2) * x * 0.4 + 3*(1 - x) * x*x * 1 + x*x*x * 1;
-	return y;
-}
-
-var timeDelta, timeLast = 0, time = Math.random() * 600;
-
-//requestAnimationFrame(loop);
-
-function loop(timeNow) {
-	timeDelta = (timeNow - timeLast) / 1000;
 	timeLast = timeNow;
-	time += timeDelta;
+	requestAnimationFrame(loop);
+}
 
+function draw() {
 	ctx.clearRect(0, 0, w, h);
 
-	ctx.strokeStyle = color;
-	ctx.lineWidth = 1 * zoom;
+	// main circle
+	ctx.beginPath();
+	ctx.arc(center.x, center.y, size, 0, 2*Math.PI);
+	ctx.fillStyle = "rgb(15, 15, 19)";
+	ctx.strokeStyle = "transparent";
+	ctx.fill();
+	ctx.stroke();
 
-	for (let i = 0; i < arcs; i++) {
-		const arcRadius = (arcOffset + ((size - arcOffset) / (arcs-1)) * i) * zoom;
+	// dots
+	for (let a = 0; a < expand; a++) {
+		for (let i = 1; i <= dots; i++) {
+			var x = (Math.cos(angle)*Math.sin((Math.PI*2/dots)*i+offsets[i*a])-length*Math.sin(angle)*Math.cos((Math.PI*2/dots)*i+offsets[i*a])) * (a + distance) + center.x;
+			var y = (Math.sin(angle)*Math.sin((Math.PI*2/dots)*i+offsets[i*a])+length*Math.cos(angle)*Math.cos((Math.PI*2/dots)*i+offsets[i*a])) * (a + distance) + center.y;
 
-		var x = center.x + offset.x;
-		var y = center.y + offset.y;
+			var m = (Math.sin(angle)-0)/(Math.cos(angle)-0);
+			// theres probably a better way to do this weird if statement thing
+			if (y-center.y < -1/m*(x-center.x)) {
+				if (dir == 1) {
+					ctx.globalCompositeOperation = "destination-over";
+				} else {
+					ctx.globalCompositeOperation = "source-over";
+				}
+			} else {
+				if (dir == -1) {
+					ctx.globalCompositeOperation = "destination-over";
+				} else {
+					ctx.globalCompositeOperation = "source-over";
+				}
+			}
 
-		// draw arc
-		ctx.beginPath();
-		ctx.arc(x, y, arcRadius, 0, Math.PI*2);
-		ctx.stroke()
-
-
-		// draw circle
-		const velocity = ((Math.PI * 2) * (50 - (i * 1))) / 600;
-		const distance = Math.PI + (time * velocity);
-		const modDistance = distance % (Math.PI*2);
-		angle = modDistance;
-		//angle = angle % Math.PI*2;
-
-		x = x + arcRadius * Math.cos(angle);
-		y = y + arcRadius * Math.sin(angle);
-
-		ctx.fillStyle = color;
-		ctx.beginPath();
-		ctx.arc(x, y, 3 * zoom, 0, Math.PI*2);
-		ctx.fill();
+			ctx.beginPath();
+			ctx.arc(x, y, sizes[i*a], 0, 2*Math.PI);
+			ctx.fillStyle = colours[i*a];
+			ctx.fill();
+		}
 	}
-
-	requestAnimationFrame(loop)
 }

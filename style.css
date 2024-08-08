@@ -4,7 +4,6 @@
 
 html, body {
 	display: flex;
-	justify-content: center;
 	text-align: center;
 	overflow: hidden;
 	color: white;
@@ -13,9 +12,7 @@ html, body {
 }
 
 #canvas {
-	background-image: linear-gradient(to bottom right, rgb(79, 75, 82), rgb(10, 10, 20));
+	background-image: linear-gradient(to bottom right, rgb(62, 62, 62), rgb(6, 5, 9));
 	position: absolute;
 	z-index: -1;
-	left: 0;
-	top: 0;
 }
