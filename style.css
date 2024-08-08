@@ -16,3 +16,28 @@ html, body {
 	position: absolute;
 	z-index: -1;
 }
+
+#home {
+	margin-left: 65vw;
+	margin-top: 35vh;
+}
+
+.button {
+	transition-duration: 500ms;
+	border: 1px solid white;
+	justify-content: center;
+	border-radius: 0.25rem;
+	text-decoration: none;
+	align-items: center;
+	color: white;
+	display: flex;
+	height: 35px;
+	width: 250px;
+	margin: 0;
+	margin-top: 10px;
+}
+
+.button:hover {
+	background-color: white;
+	color: black;
+}

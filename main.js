@@ -3,9 +3,14 @@ var ctx = canvas.getContext("2d");
 
 var h = innerHeight;
 var w = innerWidth;
+
+var pos = {
+	x: 3.5,
+	y: 2.5
+}
 var center = {
-	x: w/3.5,
-	y: h/2.5
+	x: w/pos.x,
+	y: h/pos.y
 }
 
 window.onload = function() {
@@ -23,17 +28,16 @@ function updateCanvas() {
 	w = innerWidth;
 
 	center = {
-		x: w/3.5,
-		y: h/2.5
+		x: w/pos.x,
+		y: h/pos.y
 	};
 }
 
 // animation
-var size = 250
-var length = 1;
+var size = 350
 var angle = Math.PI/2.5;
 var distance = size + 7.5;
-var expand = 50;
+var expand = 75;
 var spacing = 10;
 var dir = 1;
 var dots = 19;
@@ -71,29 +75,7 @@ function loop(timeNow){
 		const timeDelta = (timeNow - timeLast) / 1000;
 		timeLast = timeNow;
 
-		var previous = rotation;
-		//rotation += timeDelta * 0.15 * dir;
-		if (previous < 1 && rotation >= 1) {
-			dir *= -1;
-			flip *= -1;
-		} else if (previous > -1 && rotation <= -1) {
-			dir *= -1;
-			flip *= -1;
-		}
-
-		if (previous > 0 && rotation <= 0 || previous < 0 && rotation >= 0) {
-			flip *= -1;
-		}
-
 		//test.textContent = rotation;
-
-		/*length -= (timeDelta * dir + (dir * length/10)) * 0.05;
-		if (length <= 1) {
-			dir = 1;
-		} else if (length >= 1000) {
-			dir = -1;
-		}
-		distance = size/length + 1;*/
 
 		//angle += timeDelta * 0.1;
 
@@ -152,6 +134,84 @@ function draw() {
 			ctx.arc(vector.x+center.x, vector.y+center.y, sizes[i*a], 0, 2*Math.PI);
 			ctx.fillStyle = colours[i*a];
 			ctx.fill();
+		}
+	}
+}
+
+window.onhashchange = function() {
+	change();
+}
+
+function change() {
+	if (window.location.hash == "#home") {
+		move(3.5, 2.5, 350, Math.PI/2.5, 0.3, 500);
+	} else if (window.location.hash == "#about") {
+		move(3.5, 2.5, 450, Math.PI/2.5, -0.5, 500)
+	} else if (window.location.hash == "#test") {
+		move(1.5, 1.5, 550, Math.PI/1.5, 0.7, 500)
+	}
+}
+
+function move(targetX, targetY, targetSize, targetAngle, targetRotation, duration) {
+	const startX = pos.x;
+	const startY = pos.y;
+	const startSize = size;
+	const startAngle = angle;
+	const startRotation = rotation;
+
+	var startTime = null;
+
+	requestAnimationFrame(moveUpdate);
+
+	function moveUpdate(timestamp){
+		if (!startTime) {
+			startTime = timestamp;
+		}
+
+		const time = (timestamp - startTime) / duration;
+		const progress = time; // eventually add some kind of smoothing curve
+
+		if (progress < 1) {
+			pos.x = startX + (targetX - startX) * progress;
+			pos.y = startY + (targetY - startY) * progress;
+			center = {
+				x: w/pos.x,
+				y: h/pos.y
+			};
+
+			angle = startAngle + (targetAngle - startAngle) * progress;
+
+			size = startSize + (targetSize - startSize) * progress;
+			distance = size + 7.5;
+
+			var previous = rotation;
+			rotation = startRotation + (targetRotation - startRotation) * progress;
+			if (previous < 1 && rotation >= 1) {
+				dir *= -1;
+				flip *= -1;
+			} else if (previous > -1 && rotation <= -1) {
+				dir *= -1;
+				flip *= -1;
+			}
+
+			if (previous > 0 && rotation <= 0 || previous < 0 && rotation >= 0) {
+				flip *= -1;
+			}
+
+			requestAnimationFrame(moveUpdate);
+		} else {
+			pos.x = targetX;
+			pos.y = targetY;
+			center = {
+				x: w/pos.x,
+				y: h/pos.y
+			};
+
+			angle = targetAngle;
+
+			size = targetSize;
+			distance = size + 7.5;
+			rotation = targetRotation;
 		}
 	}
 }
