@@ -26,13 +26,6 @@ var zoom = 0;
 
 var ctx = canvas.getContext("2d");
 
-var home = document.getElementById("home-container");
-var works = document.getElementById("works-container");
-var about = document.getElementById("about-container");
-var navbar = document.getElementById("navbar");
-var navWorks = document.getElementById("nav-works");
-var navAbout = document.getElementById("nav-about");
-
 window.onload = function() {
 	canvas.classList.add("visible");
 	updateDivs(true);
@@ -41,6 +34,18 @@ window.onload = function() {
 
 window.onresize = function() {
 	updateCanvas();
+}
+
+function updateCanvas() {
+	canvas.height = innerHeight;
+	canvas.width = innerWidth;
+	h = innerHeight;
+	w = innerWidth;
+
+	center = {
+		x: w / 2,
+		y: h / 2
+	}
 }
 
 window.onhashchange = function() {
@@ -53,30 +58,7 @@ function updateDivs(instant) {
 		duration = 0;
 	}
 
-	home.classList.remove("visible");
-	works.classList.remove("visible");
-	about.classList.remove("visible");
-	navWorks.classList.remove("selected");
-	navAbout.classList.remove("selected");
-
-	if (window.location.hash == "#works") {
-		navWorks.classList.add("selected");
-		smoothTransition({ x: 0, y: -h/1.25 }, 1.75, duration);
-		document.title = "Ryder Schlief - Works";
-		setTimeout(addVisible, duration/1.75, works);
-		setTimeout(addVisible, duration/1.75, navbar);
-	} else if (window.location.hash == "#about") {
-		navAbout.classList.add("selected");
-		smoothTransition({ x: -w/1.75, y: -h/1.75 }, 2.5, duration);
-		document.title = "Ryder Schlief - About";
-		setTimeout(addVisible, duration/1.75, about);
-		setTimeout(addVisible, duration/1.75, navbar);
-	} else {
-		smoothTransition({ x: 0, y: 0 }, 1, duration);
-		document.title = "Ryder Schlief - Home";
-		setTimeout(addVisible, duration/1.75, home);
-		navbar.classList.remove("visible");
-	}
+	//
 }
 
 function addVisible(element) {
@@ -117,21 +99,9 @@ function curve(x){
 	return y;
 }
 
-function updateCanvas() {
-	canvas.height = innerHeight;
-	canvas.width = innerWidth;
-	h = innerHeight;
-	w = innerWidth;
-
-	center = {
-		x: w / 2,
-		y: h / 2
-	}
-}
-
 var timeDelta, timeLast = 0, time = Math.random() * 600;
 
-requestAnimationFrame(loop);
+//requestAnimationFrame(loop);
 
 function loop(timeNow) {
 	timeDelta = (timeNow - timeLast) / 1000;
