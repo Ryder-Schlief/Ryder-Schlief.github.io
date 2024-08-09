@@ -5,16 +5,12 @@ var h = innerHeight;
 var w = innerWidth;
 
 var pos = {
-	x: 3.5,
-	y: 2.5
+	x: 2,
+	y: 2
 }
 var center = {
 	x: w/pos.x,
 	y: h/pos.y
-}
-
-window.onload = function() {
-	updateCanvas();
 }
 
 window.onresize = function() {
@@ -34,32 +30,56 @@ function updateCanvas() {
 }
 
 // animation
-var size = 350
-var angle = Math.PI/2.5;
-var distance = size + 7.5;
-var expand = 75;
+const size = 250
+var distance = size + 100;
+var expand = 35;
 var spacing = 10;
 var dir = 1;
-var dots = 19;
-var rotation = 0.3;
+var dots = 20;
 var flip = 1;
+var zoom = 0;
 
-// i "add an extra dot" here because we have to skip the first dot when drawing because of the fact that indexing starts at 0
-// could probably be fixed by a 2d array but this works so idrc
-var offsets = new Array((dots+1)*expand);
-for (var i = 0; i < (dots+1)*expand; i++) {
-	offsets[i] = Math.random() * (Math.PI*2/dots);
+var index = 0; // used to cancel animations when a new one is selected
+
+// these are essentially the 3 axis' of rotation
+var rotationOffset = 0.5;
+var angleOffset = Math.PI*2;
+var offsetOffset = 0; // what is this naming convention what am i doing
+
+var rotations = new Array((dots+1)*(expand+1));
+for (var i = 0; i <= dots*expand; i++) {
+	rotations[i] = 0//(Math.random()*2-1) * 0.1;
 }
-var speeds = new Array((dots+1)*expand);
-for (var i = 0; i < (dots+1)*expand; i++) {
+
+// no angle array bc i dont think i really need it?
+
+var offsets = new Array(dots*expand);
+for (var i = 0; i <= dots*expand; i++) {
+	offsets[i] = (Math.PI*2/dots)*(i%dots) + Math.random()*(Math.PI*2/dots);
+}
+
+var order = new Array((dots+1)*(expand+1));
+for (var i = 0; i <= dots*expand; i++) {
+	var offset = offsetOffset+offsets[i];
+	if (offset%(2*Math.PI) < Math.PI) {
+		order[i] = 1;
+	} else {
+		order[i] = -1;
+	}
+}
+
+var speeds = new Array(dots*expand);
+for (var i = 0; i <= dots*expand; i++) {
 	speeds[i] = Math.random() * 0.035 + 0.01;
 }
-var sizes = new Array((dots+1)*expand);
-for (var i = 0; i < (dots+1)*expand; i++) {
+
+var sizes = new Array(dots*expand);
+for (var i = 0; i <= dots*expand; i++) {
 	sizes[i] = (Math.random() * 6)/(Math.random() * 2 + 1) + 0.5;
 }
-var colours = new Array((dots+1)*expand);
-for (var i = 0; i < (dots+1)*expand; i++) {
+
+var colours = new Array(dots*expand);
+for (var i = 0; i <= dots*expand; i++) {
 	var colour = 50 + Math.random() * 100;
 	colours[i] = "rgb(" + colour + ", " + colour + ", " + colour + ")";
 }
@@ -77,10 +97,17 @@ function loop(timeNow){
 
 		//test.textContent = rotation;
 
-		//angle += timeDelta * 0.1;
-
 		for (var i = 0; i < (dots+1)*expand; i++) {
 			offsets[i] += timeDelta * speeds[i];
+			var offset = offsetOffset+offsets[i];
+			if (offsetOffset < 0) { // had some weird niche cases when moving to a negative offset so this is here just in case
+				offset += 2*Math.PI;
+			}
+			if (offset%(2*Math.PI) < Math.PI) {
+				order[i] = 1;
+			} else {
+				order[i] = -1;
+			}
 		}
 
 		draw();
@@ -95,69 +122,74 @@ function draw() {
 
 	// main circle
 	ctx.beginPath();
-	ctx.arc(center.x, center.y, size, 0, 2*Math.PI);
-	ctx.fillStyle = "rgb(15, 15, 19)";
+	ctx.arc(center.x, center.y, size*zoom, 0, 2*Math.PI);
+	ctx.fillStyle = "rgb(10, 12, 15)";
 	ctx.strokeStyle = "transparent";
 	ctx.fill();
 	ctx.stroke();
 
 	// dots
-	for (let a = 0; a < expand; a++) {
-		for (let i = 1; i <= dots; i++) {
-			// what the fuck am i looking at
-			var x = (Math.sin((Math.PI*2/dots)*i+offsets[i*a])) * (a*spacing + distance) * /*Math.sqrt(Math.cos(angle)*Math.cos(angle) + Math.sin(angle)*Math.sin(angle)) * */rotation;
-			var y = (Math.cos((Math.PI*2/dots)*i+offsets[i*a])) * (a*spacing + distance);
-			// now add the rotation logic
-			// rotation matrices for the win
-			var vector = {
-				x: x*Math.cos(angle)-y*Math.sin(angle),
-				y: x*Math.sin(angle)+y*Math.cos(angle)
-			};
+	for (let i = 0; i < dots*expand; i++) {
+		// what the fuck am i looking at
+		var x = (Math.sin(offsetOffset+offsets[i])) * (Math.floor(i/dots)*spacing + distance) * (rotationOffset + rotations[i])// * dir;
+		var y = (Math.cos(offsetOffset+offsets[i])) * (Math.floor(i/dots)*spacing + distance);
+		// now add the rotation logic
+		// rotation matrices for the win
+		var vector = {
+			x: x*Math.cos(angleOffset)-y*Math.sin(angleOffset),
+			y: x*Math.sin(angleOffset)+y*Math.cos(angleOffset)
+		};
 
-			var m = (Math.sin(angle)-0)/(Math.cos(angle)-0);
-			// theres probably a better way to do this weird if statement thing
-			if (vector.y < -1/m*vector.x) {
-				if (flip == 1) {
-					ctx.globalCompositeOperation = "destination-over";
-				} else {
-					ctx.globalCompositeOperation = "source-over";
-				}
-			} else {
-				if (flip == -1) {
-					ctx.globalCompositeOperation = "destination-over";
-				} else {
-					ctx.globalCompositeOperation = "source-over";
-				}
-			}
-
-			ctx.beginPath();
-			ctx.arc(vector.x+center.x, vector.y+center.y, sizes[i*a], 0, 2*Math.PI);
-			ctx.fillStyle = colours[i*a];
-			ctx.fill();
+		if (order[i] == 1) {
+			ctx.globalCompositeOperation = "source-over";
+		} else if (order[i] == -1) {
+			ctx.globalCompositeOperation = "destination-over";
+		} else {
+			console.log("ORDER ERROR");
 		}
+
+		ctx.beginPath();
+		ctx.arc(vector.x*zoom+center.x, vector.y*zoom+center.y, sizes[i]*zoom, 0, 2*Math.PI);
+		ctx.fillStyle = colours[i];
+		ctx.fill();
 	}
 }
 
+// animations
 window.onhashchange = function() {
 	change();
 }
 
+window.onload = function() {
+	if (window.location.hash == "#home") {
+		move(1.5, 2.5, 1, Math.PI/2.5, 0.3, 0, 15000, index);
+	} else if (window.location.hash == "#about") {
+		move(3.5, 2.5, 2, Math.PI/2.5, -0.5, 0, 0, index)
+	} else if (window.location.hash == "#test") {
+		move(1.5, 1.5, 1.5, Math.PI/1.5, 0.7, 0, 0, index)
+	}
+	updateCanvas();
+}
+
 function change() {
 	if (window.location.hash == "#home") {
-		move(3.5, 2.5, 350, Math.PI/2.5, 0.3, 500);
+		move(1.5, 2.5, 1, Math.PI/2.5, 0.3, 0, 1500, index);
 	} else if (window.location.hash == "#about") {
-		move(3.5, 2.5, 450, Math.PI/2.5, -0.5, 500)
+		move(3.5, 2.5, 2, Math.PI/2.5, -0.5, -Math.PI/2, 1500, index)
 	} else if (window.location.hash == "#test") {
-		move(1.5, 1.5, 550, Math.PI/1.5, 0.7, 500)
+		move(1.5, 1.5, 1.5, Math.PI/1.5, 0.7, 2, 1500, index)
 	}
 }
 
-function move(targetX, targetY, targetSize, targetAngle, targetRotation, duration) {
+function move(targetX, targetY, targetZoom, targetAngle, targetRotation, targetOffset, duration, currentIndex) {
+	index++;
+	currentIndex++;
 	const startX = pos.x;
 	const startY = pos.y;
-	const startSize = size;
-	const startAngle = angle;
-	const startRotation = rotation;
+	const startZoom = zoom;
+	const startAngle = angleOffset;
+	const startRotation = rotationOffset;
+	const startOffset = offsetOffset;
 
 	var startTime = null;
 
@@ -169,7 +201,7 @@ function move(targetX, targetY, targetSize, targetAngle, targetRotation, duratio
 		}
 
 		const time = (timestamp - startTime) / duration;
-		const progress = time; // eventually add some kind of smoothing curve
+		const progress = curve(time); // eventually add some kind of smoothing curve
 
 		if (progress < 1) {
 			pos.x = startX + (targetX - startX) * progress;
@@ -179,26 +211,23 @@ function move(targetX, targetY, targetSize, targetAngle, targetRotation, duratio
 				y: h/pos.y
 			};
 
-			angle = startAngle + (targetAngle - startAngle) * progress;
+			angleOffset = startAngle + (targetAngle - startAngle) * progress;
 
-			size = startSize + (targetSize - startSize) * progress;
-			distance = size + 7.5;
+			offsetOffset = startOffset + (targetOffset - startOffset) * progress;
 
-			var previous = rotation;
-			rotation = startRotation + (targetRotation - startRotation) * progress;
-			if (previous < 1 && rotation >= 1) {
+			var previous = rotationOffset;
+			rotationOffset = startRotation + (targetRotation - startRotation) * progress;
+			if (previous < 1 && rotationOffset >= 1) {
 				dir *= -1;
-				flip *= -1;
-			} else if (previous > -1 && rotation <= -1) {
+			} else if (previous > -1 && rotationOffset <= -1) {
 				dir *= -1;
-				flip *= -1;
 			}
 
-			if (previous > 0 && rotation <= 0 || previous < 0 && rotation >= 0) {
-				flip *= -1;
-			}
+			zoom = startZoom + (targetZoom - startZoom) * progress;
 
-			requestAnimationFrame(moveUpdate);
+			if (currentIndex >= index) {
+				requestAnimationFrame(moveUpdate);
+			}
 		} else {
 			pos.x = targetX;
 			pos.y = targetY;
@@ -207,11 +236,23 @@ function move(targetX, targetY, targetSize, targetAngle, targetRotation, duratio
 				y: h/pos.y
 			};
 
-			angle = targetAngle;
+			angleOffset = targetAngle;
 
-			size = targetSize;
-			distance = size + 7.5;
-			rotation = targetRotation;
+			offsetOffset = targetOffset;
+
+			zoom = targetZoom;
+
+			rotationOffset = targetRotation;
+
+			var moving = false;
+
+			index = 0;
 		}
 	}
+}
+
+function curve(x) {
+	//const y = x; // linear curve
+	const y = Math.pow((1 - x), 3) * 0 + Math.pow(3*(1 - x), 2) * x * 0.4 + 3*(1 - x) * x*x * 1 + x*x*x * 1; // cubic bezier curve
+	return y;
 }
